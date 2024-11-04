@@ -5,7 +5,6 @@ function SideMenu() {
   const FunctionsLinks = [
     { name: "File" },
     { name: "Clipboard" },
-    { name: "Image" },
     { name: "Shapes" },
     { name: "Colors" },
     { name: "Tools"},

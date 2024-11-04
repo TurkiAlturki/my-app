@@ -2,11 +2,9 @@ import { useState } from "react";
 
 function CanvasShapes() {
   const FunctionsLinks = [
-    { name: "shapes" },
-    { name: "Open" },
-    { name: "Save" },
-    { name: "Save As" },
-    { name: "Prpoerties" },
+    { name: "List of Shapes" },
+    { name: "Outline color" },
+    { name: "Fill color" },
     { name: "Quit" },
   ];
   const [active, setActive] = useState(FunctionsLinks[0].name);

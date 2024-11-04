@@ -2,11 +2,13 @@ import { useState } from "react";
 
 function CanvasTools() {
   const FunctionsLinks = [
-    { name: "tools" },
-    { name: "Open" },
-    { name: "Save" },
-    { name: "Save As" },
-    { name: "Prpoerties" },
+    { name: "Zoom" },
+    { name: "Erase" },
+    { name: "Color Picker" },
+    { name: "Paint brushes" },
+    { name: "Text box" },
+    { name: "Filters" },
+    { name: "Crop, Resize, Rotate" },
     { name: "Quit" },
   ];
   const [active, setActive] = useState(FunctionsLinks[0].name);

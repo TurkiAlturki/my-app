@@ -4,6 +4,7 @@ function CanvasClipboard() {
   const navigate = useNavigate();
   const location = useLocation();
   const FunctionsLinks = [
+    { name: "Select" },
     { name: "Copy" },
     { name: "Past" },
     { name: "Cute" },

@@ -2,11 +2,9 @@ import { useState } from "react";
 
 function CanvasColors() {
   const FunctionsLinks = [
-    { name: "color" },
-    { name: "color1" },
-    { name: "Save" },
-    { name: "Save As" },
-    { name: "Prpoerties" },
+    { name: "Color pallet" },
+    { name: "Size of brush" },
+    { name: "Quit" },
 
   ];
   const [active, setActive] = useState(FunctionsLinks[0].name);
