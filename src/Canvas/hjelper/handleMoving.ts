@@ -2,12 +2,11 @@ import { PointerEvent, RefObject } from "react";
 
 export const handleMoving = (
   e: PointerEvent<HTMLCanvasElement>,
-  allowMoving: boolean,
   canvasRef: RefObject<HTMLCanvasElement>,
   bgRef: RefObject<HTMLDivElement>,
   imageWidth: number | null,
 ): void => {
-  if (!allowMoving || !canvasRef.current || !bgRef.current) return;
+  if ( !canvasRef.current || !bgRef.current) return;
 
   e.stopPropagation();
   const clientX = e.clientX;
