@@ -10,9 +10,9 @@ function App() {
 
   return (
     <BrowserRouter>
-      <main className="absolute flex h-full w-full flex-col">
+      <main className="flex flex-col fixed bottom-0 top-0 left-0 right-0 m-auto">
         <PageHeader />
-        <section className="flex h-full flex-row">
+        <section className="flex flex-row h-full p-4 overflow-hidden">
           <SideMenu />
           <Canvas />
         </section>

@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface IImage {
   imageUrl: string | null;
+  imageWidth: number | null;
 }
 
 const initialState: IImage = {
   imageUrl: null,
+  imageWidth: null,
 };
 
 export const ImageSlice = createSlice({
@@ -14,6 +16,9 @@ export const ImageSlice = createSlice({
   reducers: {
     setImageUrl: (state, action: PayloadAction<string>) => {
       state.imageUrl = action.payload;
+    },
+    setImageWidth: (state, action: PayloadAction<number>) => {
+      state.imageWidth = action.payload;
     },
 
     remove: (state) => {

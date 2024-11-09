@@ -28,7 +28,7 @@ function CanvasMenu() {
           >
             <button
               className="block h-full w-full p-4  text-center"
-              onClick={() => handleClick(`${link.id.toLowerCase()}`)}
+              onClick={() => handleClick(`${link.id}`)}
               aria-current={active === link.id ? "page" : undefined}
             >
               {link.name}

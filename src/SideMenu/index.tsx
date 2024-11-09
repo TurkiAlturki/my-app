@@ -11,7 +11,7 @@ function SideMenu() {
     { name: "Quit"},
   ];
   const [active, setActive] = useState("");
-  console.log(active)
+
   return (
     <nav className="w-80 bg-gray-800" aria-label="Sidebar">
       <ul className="flex flex-col text-white">
@@ -23,7 +23,7 @@ function SideMenu() {
               active === link.name ? "bg-green-700" : "bg-gray-600"
             }`}
           >
-            <Link className="w-full h-full p-4 block" to={`${link.name.toLowerCase()}`} aria-current={active === link.name ? "page" : undefined}>
+            <Link className="w-full h-full p-4 block" to={`${link.name}`} aria-current={active === link.name ? "page" : undefined}>
               {link.name}
             </Link>
           </li>
