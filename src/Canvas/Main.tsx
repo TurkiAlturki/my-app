@@ -1,15 +1,14 @@
 import { GetReduxState, SetReduxState } from "../Redux/Store";
-import ImageUploader from "./hjelper/ImageUploader";
 import { PointerEvent as ReactPointerEvent, useEffect, useRef } from "react";
 import initialize from "./hjelper/initialize";
 import { handleMoving } from "./hjelper/handleMoving";
 import Rectangular from "./Functional/Selection/Rectangular";
 import Lasso from "./Functional/Selection/Lasso";
-import ImagePaster from "./Functional/Selection/ImagePaster";
 import copySelectedAreaToClipboard from "./Functional/Selection/copySelectedAreaToClipboard";
 import copySelectedAreaToClipboard2 from "./Functional/Selection/copySelectedAreaToClipboard2";
 import cutSelectedAreaToClipboard from "./Functional/Selection/cutSelectedAreaToClipboard";
 import cutSelectedAreaToClipboard2 from "./Functional/Selection/cutSelectedAreaToClipboard2";
+import pastSelectedAreaToClipboard from "./Functional/Selection/pastSelectedAreaToClipboard";
 
 function Main() {
   const setReduxState = SetReduxState();
@@ -41,6 +40,8 @@ function Main() {
     } else if (selectSors === "Lasso") {
       cutSelectedAreaToClipboard2(rectClip2, canvasRef.current!!, canvasRef);
     }
+  } else if (uperMenu === "clip_Past") {
+    pastSelectedAreaToClipboard();
   }
   const handlePointerDown = (e: ReactPointerEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !bgRef.current) return;
@@ -88,7 +89,7 @@ function Main() {
           ref={canvasRef}
           onPointerDown={handlePointerDown}
         />
-        <ImagePaster />
+
         <button
           onClick={() => saveImage(canvasRef)}
           className="absolute bottom-4 right-4 rounded bg-blue-500 p-2 text-white"
