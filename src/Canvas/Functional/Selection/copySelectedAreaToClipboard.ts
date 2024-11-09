@@ -39,6 +39,7 @@ const copySelectedAreaToClipboard = (
           ]);
           console.log(blob);
           console.log("Selected area copied to clipboard.");
+          let rect = { startX: 0, startY: 0, width: 0, height: 0 };
         } catch (error) {
           console.error("Failed to copy to clipboard:", error);
         }

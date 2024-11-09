@@ -75,7 +75,6 @@ function Main() {
       console.error("Canvas is not available for saving.");
     }
   }
-  if (uperMenu === "Menu_New") return <ImageUploader />;
   if (imageUrl) {
     return (
       <div
@@ -98,8 +97,9 @@ function Main() {
         </button>
       </div>
     );
+  } else {
+    return <div className=" m-auto ">You need to upload an image</div>;
   }
-  return <div>You need to upload an image</div>;
 }
 
 export default Main;
