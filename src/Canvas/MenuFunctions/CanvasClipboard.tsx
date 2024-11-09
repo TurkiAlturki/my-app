@@ -7,7 +7,7 @@ function CanvasClipboard() {
     {
       id: "clip_Select",
       name: "Select",
-      sub: ["Rectangular", "Lasso", "Polygon"],
+      sub: ["Rectangular", "Lasso"],
     },
     { id: "clip_Copy", name: "Copy" },
     { id: "clip_Past", name: "Paste" },

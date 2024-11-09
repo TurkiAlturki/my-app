@@ -15,11 +15,10 @@ function Main() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
 
-  const allowMoving = !["Rectangular", "Lasso", "Polygon"].includes(uperMenu!!);
+  const allowMoving = !["Rectangular", "Lasso"].includes(uperMenu!!);
 
   useEffect(() => {
     initialize(canvasRef, imageUrl, setReduxState);
-    console.log(canvasRef);
   }, [imageUrl]);
 
   const handlePointerDown = (e: ReactPointerEvent<HTMLCanvasElement>) => {
