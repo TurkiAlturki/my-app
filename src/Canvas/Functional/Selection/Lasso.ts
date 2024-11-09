@@ -1,9 +1,18 @@
 import { PointerEvent, RefObject } from "react";
+import { IImage, imageSlice } from "../../../Redux/ImageSlice";
+import { ThunkDispatch, UnknownAction, Dispatch } from "@reduxjs/toolkit";
+import { IAppSettings } from "../../../Redux/AppSettingsSlice";
 
 const Lasso = (
   e: PointerEvent<HTMLCanvasElement>,
   canvasRef: RefObject<HTMLCanvasElement>,
-  imageUrl: string
+  imageUrl: string,
+  setReduxState: ThunkDispatch<
+    { AppSettingsSlice: IAppSettings; ImageSlice: IImage },
+    undefined,
+    UnknownAction
+  > &
+    Dispatch<UnknownAction>,
 ): void => {
   if (!canvasRef.current) return;
   e.stopPropagation();
@@ -66,9 +75,14 @@ const Lasso = (
     context.lineTo(points[0].x, points[0].y);
     context.stroke();
     context.closePath();
+    setReduxState(imageSlice.setRectClip2(points));
+    setReduxState(imageSlice.setSelectSors("Lasso"));
 
     // Remove event listeners
-    document.removeEventListener("pointermove", handleMouseMove as EventListener);
+    document.removeEventListener(
+      "pointermove",
+      handleMouseMove as EventListener,
+    );
     document.removeEventListener("pointerup", handleMouseUp as EventListener);
   };
 

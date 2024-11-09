@@ -1,9 +1,19 @@
 import { PointerEvent, RefObject } from "react";
 
+import { IImage, imageSlice } from "../../../Redux/ImageSlice";
+import { ThunkDispatch, UnknownAction, Dispatch } from "@reduxjs/toolkit";
+import { IAppSettings } from "../../../Redux/AppSettingsSlice";
+
 const Rectangular = (
   e: PointerEvent<HTMLCanvasElement>,
   canvasRef: RefObject<HTMLCanvasElement>,
   imageUrl: string,
+  setReduxState: ThunkDispatch<
+    { AppSettingsSlice: IAppSettings; ImageSlice: IImage },
+    undefined,
+    UnknownAction
+  > &
+    Dispatch<UnknownAction>,
 ): void => {
   if (!canvasRef.current) return;
   e.stopPropagation();
@@ -58,6 +68,13 @@ const Rectangular = (
       handleMouseMove as EventListener,
     );
     document.removeEventListener("pointerup", handleMouseUp as EventListener);
+
+    // Call the function to copy the selected area to the clipboard
+
+    if (rect.width != 0 && rect.height != 0) {
+      setReduxState(imageSlice.setRectClip(rect));
+      setReduxState(imageSlice.setSelectSors("Rectangular"));
+    }
   };
 
   // Add event listeners for drawing
