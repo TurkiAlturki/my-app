@@ -23,7 +23,7 @@ const Rectangular = (
   const canvas = canvasRef.current;
   const context = canvas.getContext("2d");
   const image = new Image();
-  image.src = imageUrl;
+  image.src = canvas.toDataURL("image/png");
 
   // Draw the image onto the canvas
   const drawImage = () => {

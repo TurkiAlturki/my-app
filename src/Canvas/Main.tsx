@@ -58,7 +58,23 @@ function Main() {
         }
     }
   };
+  function saveImage(canvasRef: React.RefObject<HTMLCanvasElement>) {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      // Convert the canvas to a PNG data URL
+      const imageDataURL = canvas.toDataURL("image/png");
 
+      // Create a link element to download the image
+      const downloadLink = document.createElement("a");
+      downloadLink.href = imageDataURL;
+      downloadLink.download = "canvas_image.png";
+
+      // Programmatically click the link to trigger the download
+      downloadLink.click();
+    } else {
+      console.error("Canvas is not available for saving.");
+    }
+  }
   if (uperMenu === "Menu_New") return <ImageUploader />;
   if (imageUrl) {
     return (
@@ -74,6 +90,12 @@ function Main() {
           onPointerDown={handlePointerDown}
         />
         <ImagePaster />
+        <button
+          onClick={() => saveImage(canvasRef)}
+          className="absolute bottom-4 right-4 rounded bg-blue-500 p-2 text-white"
+        >
+          Save Image
+        </button>
       </div>
     );
   }

@@ -22,7 +22,7 @@ const Lasso = (
   const canvas = canvasRef.current;
   const context = canvas.getContext("2d");
   const image = new Image();
-  image.src = imageUrl;
+  image.src = canvas.toDataURL("image/png");
 
   // Draw the image onto the canvas
   const drawImage = () => {
@@ -62,7 +62,7 @@ const Lasso = (
     for (let i = 1; i < points.length; i++) {
       context.lineTo(points[i].x, points[i].y);
     }
-    context.strokeStyle = "blue"; // Customize lasso color as needed
+    context.strokeStyle = "red"; // Customize lasso color as needed
     context.stroke();
   };
 
