@@ -8,6 +8,8 @@ import Lasso from "./Functional/Selection/Lasso";
 import ImagePaster from "./Functional/Selection/ImagePaster";
 import copySelectedAreaToClipboard from "./Functional/Selection/copySelectedAreaToClipboard";
 import copySelectedAreaToClipboard2 from "./Functional/Selection/copySelectedAreaToClipboard2";
+import cutSelectedAreaToClipboard from "./Functional/Selection/cutSelectedAreaToClipboard";
+import cutSelectedAreaToClipboard2 from "./Functional/Selection/cutSelectedAreaToClipboard2";
 
 function Main() {
   const setReduxState = SetReduxState();
@@ -32,6 +34,12 @@ function Main() {
       copySelectedAreaToClipboard(rectClip, canvasRef.current!!);
     } else if (selectSors === "Lasso") {
       copySelectedAreaToClipboard2(rectClip2, canvasRef.current!!, canvasRef);
+    }
+  } else if (uperMenu === "clip_Cute") {
+    if (selectSors === "Rectangular") {
+      cutSelectedAreaToClipboard(rectClip, canvasRef.current!!, canvasRef);
+    } else if (selectSors === "Lasso") {
+      cutSelectedAreaToClipboard2(rectClip2, canvasRef.current!!, canvasRef);
     }
   }
   const handlePointerDown = (e: ReactPointerEvent<HTMLCanvasElement>) => {

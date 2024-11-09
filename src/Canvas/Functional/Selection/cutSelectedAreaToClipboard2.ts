@@ -1,7 +1,7 @@
 import { RefObject } from "react";
 import { IRectClip2 } from "../../../Redux/ImageSlice";
 
-const copySelectedAreaToClipboard2 = async (
+const cutSelectedAreaToClipboard2 = async (
   points: IRectClip2[],
   canvas: CanvasImageSource,
   canvasRef: RefObject<HTMLCanvasElement>,
@@ -36,11 +36,29 @@ const copySelectedAreaToClipboard2 = async (
         await navigator.clipboard.write([
           new ClipboardItem({ "image/png": blob }),
         ]);
-        console.log("Selected area copied to clipboard!");
+        console.log("Selected area cut to clipboard.");
+
+        // Clear the selected area from the original canvas
+        const mainCanvas = canvasRef.current;
+        const mainContext = mainCanvas?.getContext("2d");
+        if (mainContext) {
+          // Set the composite operation to clear
+          mainContext.globalCompositeOperation = "destination-out";
+          mainContext.beginPath();
+          mainContext.moveTo(points[0].x, points[0].y);
+          for (let i = 1; i < points.length; i++) {
+            mainContext.lineTo(points[i].x, points[i].y);
+          }
+          mainContext.closePath();
+          mainContext.fill();
+          // Reset the composite operation to default
+          mainContext.globalCompositeOperation = "source-over";
+        }
       } catch (err) {
-        console.error("Failed to copy selected area:", err);
+        alert(`Failed to copy selected area: ${err}`);
       }
     }
   });
 };
-export default copySelectedAreaToClipboard2;
+
+export default cutSelectedAreaToClipboard2;
