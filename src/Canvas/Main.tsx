@@ -3,6 +3,8 @@ import ImageUploader from "./hjelper/ImageUploader";
 import { PointerEvent as ReactPointerEvent, useEffect, useRef } from "react";
 import initialize from "./hjelper/initialize";
 import { handleMoving } from "./hjelper/handleMoving";
+import Rectangular from "./Functional/Selection/Rectangular";
+import Lasso from "./Functional/Selection/Lasso";
 
 function Main() {
   const setReduxState = SetReduxState();
@@ -12,11 +14,30 @@ function Main() {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
-  const allowMoving = true;
+
+  const allowMoving = !["Rectangular", "Lasso", "Polygon"].includes(uperMenu!!);
 
   useEffect(() => {
     initialize(canvasRef, imageUrl, setReduxState);
+    console.log(canvasRef);
   }, [imageUrl]);
+
+  const handlePointerDown = (e: ReactPointerEvent<HTMLCanvasElement>) => {
+    if (!canvasRef.current || !bgRef.current) return;
+
+    switch (uperMenu) {
+      case "Rectangular":
+        Rectangular(e, canvasRef, imageUrl!!);
+        break;
+      case "Lasso":
+        Lasso(e, canvasRef, imageUrl!!);
+        break;
+      default:
+        if (allowMoving) {
+          handleMoving(e, canvasRef, bgRef, imageWidth);
+        }
+    }
+  };
 
   if (uperMenu === "Menu_New") return <ImageUploader />;
   if (imageUrl) {
@@ -30,9 +51,7 @@ function Main() {
             allowMoving && "cursor-move"
           }`}
           ref={canvasRef}
-          onPointerDown={(e) =>
-            handleMoving(e, allowMoving, canvasRef, bgRef, imageWidth)
-          }
+          onPointerDown={handlePointerDown}
         />
       </div>
     );
