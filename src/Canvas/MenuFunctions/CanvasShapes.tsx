@@ -12,7 +12,7 @@ function CanvasShapes() {
   }
 
   const FunctionsLinksOLD: Interface[] = [
-    { id: "Shapes_List_of_Shapes", name: "List of Shapes" },
+    { id: "Shapes_List_of_Shapes", name: "List of Shapes", sub: ["Diamond", "Arrow"], },
     { id: "shapes_Outline_color", name: "Outline color" },
     { id: "shapes_Fill_color", name: "Fill color" },
     { id: "shapes_quit", name: "Quit" },

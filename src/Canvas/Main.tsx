@@ -11,6 +11,8 @@ import cutSelectedAreaToClipboard2 from "./Functional/Selection/cutSelectedAreaT
 import pastSelectedAreaToClipboard from "./Functional/Selection/pastSelectedAreaToClipboard";
 import menuSaveAs from "./hjelper/menuSaveAs";
 import displayProperties from "./hjelper/displayProperties";
+import arrow from "./Functional/Shapes/Arrow";
+import diamond from "./Functional/Shapes/Diamond";
 
 function Main() {
   const setReduxState = SetReduxState();
@@ -24,7 +26,7 @@ function Main() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
 
-  const allowMoving = !["Rectangular", "Lasso"].includes(uperMenu!!);
+  const allowMoving = !["Rectangular", "Lasso", "Diamond","Arrow"].includes(uperMenu!!);
 
   useEffect(() => {
     initialize(canvasRef, imageUrl, setReduxState);
@@ -46,8 +48,12 @@ function Main() {
     pastSelectedAreaToClipboard();
   } else if (uperMenu === "Menu_Save_As") {
     menuSaveAs(canvasRef);
-  }else if (uperMenu === "Menu_Prpoerties") {
+  } else if (uperMenu === "Menu_Prpoerties") {
     displayProperties(canvasRef.current!!);
+  } else if (uperMenu === "Arrow") {
+    arrow(canvasRef.current!!);
+  } else if (uperMenu === "Diamond") {
+    diamond(canvasRef.current!!);
   }
   const handlePointerDown = (e: ReactPointerEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !bgRef.current) return;
