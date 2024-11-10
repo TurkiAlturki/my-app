@@ -70,7 +70,7 @@ function Main() {
   } else if (uperMenu === "Menu_Save_As") {
     menuSaveAs(canvasRef);
   } else if (uperMenu === "Menu_Prpoerties") {
-    displayProperties(canvasRef.current!!);
+    displayProperties(canvasRef);
   } else if (uperMenu === "Arrow") {
     arrow(canvasRef.current!!);
   } else if (uperMenu === "Diamond") {
