@@ -37,8 +37,10 @@ const ImageUploader: React.FC = () => {
 
           canvas.toBlob((blob) => {
             if (blob) {
-              setReduxState(imageSlice.setImageUrl(URL.createObjectURL(blob)));
+              const imageURL = URL.createObjectURL(blob);
+              setReduxState(imageSlice.setImageUrl(imageURL));
               setReduxState(appSettingsSlice.remove());
+              setReduxState(imageSlice.setUndo(imageURL));
             }
           }, "image/png");
         }

@@ -14,6 +14,7 @@ import displayProperties from "./hjelper/displayProperties";
 import arrow from "./Functional/Shapes/Arrow";
 import diamond from "./Functional/Shapes/Diamond";
 import { LuChevronLeftCircle, LuChevronRightCircle } from "react-icons/lu";
+import { imageSlice } from "../Redux/ImageSlice";
 function Main() {
   const setReduxState = SetReduxState();
   const uperMenu = GetReduxState((state) => state.AppSettingsSlice.uperMenu);
@@ -22,6 +23,9 @@ function Main() {
   const rectClip = GetReduxState((state) => state.ImageSlice.rectClip);
   const selectSors = GetReduxState((state) => state.ImageSlice.selectSors);
   const rectClip2 = GetReduxState((state) => state.ImageSlice.rectClip2);
+
+  const redoState = GetReduxState((state) => state.ImageSlice.redo);
+  const undoState = GetReduxState((state) => state.ImageSlice.undo);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
@@ -33,6 +37,21 @@ function Main() {
   useEffect(() => {
     initialize(canvasRef, imageUrl, setReduxState);
   }, [imageUrl]);
+
+  useEffect(() => {
+    if (canvasRef.current && undoState.length > 0) {
+      const image = new Image();
+      image.src = undoState[undoState.length - 1];
+      image.onload = () => {
+        const canvas = canvasRef.current!!;
+        const context = canvas.getContext("2d");
+        if (context) {
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        }
+      };
+    }
+  }, [undoState]);
 
   if (uperMenu === "clip_Copy") {
     if (selectSors === "Rectangular") {
@@ -73,23 +92,7 @@ function Main() {
         }
     }
   };
-  function saveImage(canvasRef: React.RefObject<HTMLCanvasElement>) {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      // Convert the canvas to a PNG data URL
-      const imageDataURL = canvas.toDataURL("image/png");
 
-      // Create a link element to download the image
-      const downloadLink = document.createElement("a");
-      downloadLink.href = imageDataURL;
-      downloadLink.download = "canvas_image.png";
-
-      // Programmatically click the link to trigger the download
-      downloadLink.click();
-    } else {
-      console.error("Canvas is not available for saving.");
-    }
-  }
   if (imageUrl) {
     return (
       <div
@@ -105,16 +108,22 @@ function Main() {
         />
         <div className="absolute bottom-1 right-2 flex gap-1">
           <button
-            onClick={() => saveImage(canvasRef)}
-            className=" rounded bg-gray-300 p-2 text-3xl"
+            onClick={() => setReduxState(imageSlice.undo())}
+            className=" flex flex-col items-center justify-center rounded bg-gray-300 p-1 hover:bg-blue-500 hover:text-gray-200"
           >
-            <LuChevronLeftCircle />
+            <i className=" text-3xl">
+              <LuChevronLeftCircle />
+            </i>
+            <p className=" text-sm font-semibold">Undo</p>
           </button>
           <button
-            onClick={() => saveImage(canvasRef)}
-            className=" rounded bg-gray-300 p-1 text-3xl"
+            onClick={() => setReduxState(imageSlice.redo())}
+            className=" flex flex-col items-center justify-center rounded bg-gray-300 p-1 hover:bg-blue-500 hover:text-gray-200"
           >
-            <LuChevronRightCircle />
+            <i className=" text-3xl">
+              <LuChevronRightCircle />
+            </i>
+            <p className=" text-sm font-semibold">Redo</p>
           </button>
         </div>
       </div>

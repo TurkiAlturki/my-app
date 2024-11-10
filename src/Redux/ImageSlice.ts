@@ -51,15 +51,38 @@ export const ImageSlice = createSlice({
       state.selectSors = action.payload;
     },
     setUndo: (state, action: PayloadAction<string>) => {
-     state.undo.push(action.payload)
+      state.undo.push(action.payload);
+      if (state.undo.length > 50) state.undo.shift(); // limit undo history
+    },
+    undo: (state) => {
+      if (state.undo.length > 0) {
+        const lastAction = state.undo.pop(); // Remove the last action from undo
+        if (lastAction) {
+          state.redo.push(lastAction); // Add it to redo
+          if (state.redo.length > 50) state.redo.shift(); // limit redo history
+        }
+      }
     },
     setRedo: (state, action: PayloadAction<string>) => {
-      state.redo.push(action.payload)
+      state.redo.push(action.payload);
+      if (state.redo.length > 50) state.redo.shift(); // limit redo history
+    },
+    redo: (state) => {
+      if (state.redo.length > 0) {
+        const lastRedoAction = state.redo.pop(); // Remove the last action from redo
+        if (lastRedoAction) {
+          state.undo.push(lastRedoAction); // Add it to undo
+          if (state.undo.length > 50) state.undo.shift(); // limit undo history
+        }
+      }
     },
     clearRedo: (state) => {
       state.redo = [];
     },
-    remove: (state) => {
+    clearUndo: (state) => {
+      state.undo = [];
+    },
+    clearImageUrl: (state) => {
       state.imageUrl = null;
     },
   },

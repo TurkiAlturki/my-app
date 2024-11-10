@@ -25,7 +25,7 @@ function SideMenu() {
           <li
             key={link.name}
             onClick={() => setActive(link.name)}
-            className={`${active === link.name ? "bg-green-700" : ""}`}
+            className={`${active === link.name ? "bg-blue-500" : ""}`}
           >
             <Link
               to={`${link.name}`}

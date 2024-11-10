@@ -75,6 +75,7 @@ const Rectangular = (
     if (rect.width != 0 && rect.height != 0) {
       setReduxState(imageSlice.setRectClip(rect));
       setReduxState(imageSlice.setSelectSors("Rectangular"));
+      setReduxState(imageSlice.setUndo(canvas.toDataURL("image/png")));
     }
   };
 
