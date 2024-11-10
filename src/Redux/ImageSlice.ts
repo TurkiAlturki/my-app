@@ -17,6 +17,8 @@ export interface IImage {
   rectClip: IRectClip;
   rectClip2: IRectClip2[];
   selectSors: string;
+  undo: string[];
+  redo: string[];
 }
 
 const initialState: IImage = {
@@ -25,6 +27,8 @@ const initialState: IImage = {
   rectClip: { startX: 0, startY: 0, width: 0, height: 0 },
   rectClip2: [{ x: 0, y: 0 }],
   selectSors: "",
+  undo: [],
+  redo: [],
 };
 
 export const ImageSlice = createSlice({
@@ -46,7 +50,15 @@ export const ImageSlice = createSlice({
     setSelectSors: (state, action: PayloadAction<string>) => {
       state.selectSors = action.payload;
     },
-
+    setUndo: (state, action: PayloadAction<string>) => {
+     state.undo.push(action.payload)
+    },
+    setRedo: (state, action: PayloadAction<string>) => {
+      state.redo.push(action.payload)
+    },
+    clearRedo: (state) => {
+      state.redo = [];
+    },
     remove: (state) => {
       state.imageUrl = null;
     },

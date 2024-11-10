@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SetReduxState, GetReduxState } from "../../Redux/Store";
+import { SetReduxState } from "../../Redux/Store";
 import { appSettingsSlice } from "../../Redux/AppSettingsSlice";
 
 function CanvasColors() {
@@ -19,7 +19,6 @@ function CanvasColors() {
 
   const [FunctionsLinks, setFunctionsLinks] = useState(FunctionsLinksOLD);
 
-  const uperMenu = GetReduxState((state) => state.AppSettingsSlice.uperMenu);
 
   function handleClick(id: string, sub?: string): void {
     if (!sub) {

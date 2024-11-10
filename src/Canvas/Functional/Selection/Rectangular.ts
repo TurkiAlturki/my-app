@@ -23,7 +23,7 @@ const Rectangular = (
   const canvas = canvasRef.current;
   const context = canvas.getContext("2d");
   const image = new Image();
-  image.src = canvas.toDataURL("image/png");
+  image.src = canvas.toDataURL("image/png"); // imageUrl
 
   // Draw the image onto the canvas
   const drawImage = () => {
@@ -53,6 +53,7 @@ const Rectangular = (
     rect.height = currentY - rect.startY;
 
     // Clear and redraw image, then draw the rectangle
+
     drawImage();
     context.beginPath();
     context.rect(rect.startX, rect.startY, rect.width, rect.height);

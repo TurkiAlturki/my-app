@@ -13,7 +13,7 @@ import menuSaveAs from "./hjelper/menuSaveAs";
 import displayProperties from "./hjelper/displayProperties";
 import arrow from "./Functional/Shapes/Arrow";
 import diamond from "./Functional/Shapes/Diamond";
-
+import { LuChevronLeftCircle, LuChevronRightCircle } from "react-icons/lu";
 function Main() {
   const setReduxState = SetReduxState();
   const uperMenu = GetReduxState((state) => state.AppSettingsSlice.uperMenu);
@@ -26,7 +26,9 @@ function Main() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
 
-  const allowMoving = !["Rectangular", "Lasso", "Diamond","Arrow"].includes(uperMenu!!);
+  const allowMoving = !["Rectangular", "Lasso", "Diamond", "Arrow"].includes(
+    uperMenu!!,
+  );
 
   useEffect(() => {
     initialize(canvasRef, imageUrl, setReduxState);
@@ -101,13 +103,20 @@ function Main() {
           ref={canvasRef}
           onPointerDown={handlePointerDown}
         />
-
-        <button
-          onClick={() => saveImage(canvasRef)}
-          className="absolute bottom-4 right-4 rounded bg-blue-500 p-2 text-white"
-        >
-          Save Image
-        </button>
+        <div className="absolute bottom-1 right-2 flex gap-1">
+          <button
+            onClick={() => saveImage(canvasRef)}
+            className=" rounded bg-gray-300 p-2 text-3xl"
+          >
+            <LuChevronLeftCircle />
+          </button>
+          <button
+            onClick={() => saveImage(canvasRef)}
+            className=" rounded bg-gray-300 p-1 text-3xl"
+          >
+            <LuChevronRightCircle />
+          </button>
+        </div>
       </div>
     );
   } else {
