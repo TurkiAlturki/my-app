@@ -9,6 +9,7 @@ import copySelectedAreaToClipboard2 from "./Functional/Selection/copySelectedAre
 import cutSelectedAreaToClipboard from "./Functional/Selection/cutSelectedAreaToClipboard";
 import cutSelectedAreaToClipboard2 from "./Functional/Selection/cutSelectedAreaToClipboard2";
 import pastSelectedAreaToClipboard from "./Functional/Selection/pastSelectedAreaToClipboard";
+import menuSaveAs from "./hjelper/menuSaveAs";
 
 function Main() {
   const setReduxState = SetReduxState();
@@ -42,7 +43,10 @@ function Main() {
     }
   } else if (uperMenu === "clip_Past") {
     pastSelectedAreaToClipboard();
-  }
+  
+} else if (uperMenu === "Menu_Save_As") {
+  menuSaveAs(canvasRef);
+}
   const handlePointerDown = (e: ReactPointerEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !bgRef.current) return;
 
