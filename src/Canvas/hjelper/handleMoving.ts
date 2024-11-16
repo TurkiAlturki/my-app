@@ -6,7 +6,7 @@ export const handleMoving = (
   bgRef: RefObject<HTMLDivElement>,
   imageWidth: number | null,
 ): void => {
-  if ( !canvasRef.current || !bgRef.current) return;
+  if (!canvasRef.current || !bgRef.current) return;
 
   e.stopPropagation();
   const clientX = e.clientX;
@@ -34,8 +34,9 @@ export const handleMoving = (
     });
   };
 
-  const upHandler = () =>
-    handlePointerUP(upHandler, moveHandler);
+  const upHandler = () => handlePointerUP(upHandler, moveHandler, canvasRef);
+
+
 
   document.addEventListener("pointermove", moveHandler as EventListener, {
     passive: false,
@@ -48,7 +49,10 @@ export const handleMoving = (
 const handlePointerUP = (
   upHandler: (e: globalThis.PointerEvent) => void,
   moveHandler: (e: globalThis.PointerEvent) => void,
+  canvasRef: RefObject<HTMLCanvasElement>
 ) => {
   document.removeEventListener("pointermove", moveHandler as EventListener);
   document.removeEventListener("pointerup", upHandler as EventListener);
+
+  canvasRef.current!!.style.cursor = "default";
 };

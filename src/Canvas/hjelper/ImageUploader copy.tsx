@@ -40,7 +40,7 @@ const ImageUploader: React.FC = () => {
               const imageURL = URL.createObjectURL(blob);
               setReduxState(imageSlice.setImageUrl(imageURL));
               setReduxState(appSettingsSlice.remove());
-           /*    setReduxState(imageSlice.setUndo(imageURL)); */
+        /*       setReduxState(imageSlice.setUndo(imageURL)); */
             }
           }, "image/png");
         }
