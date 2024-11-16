@@ -18,11 +18,11 @@ function displayProperties(canvas: RefObject<HTMLCanvasElement>): void {
   // Display these properties in an alert
   alert(
     `Image Properties:
-    Width: ${properties.width}px
-    Height: ${properties.height}px
-    Resolution: ${properties.resolution}
-    Format: ${properties.format}
-    Created Date: ${properties.createdDate}`,
+      Width: ${properties.width}px
+      Height: ${properties.height}px
+      Resolution: ${properties.resolution}
+      Format: ${properties.format}
+      Created Date: ${properties.createdDate}`,
   );
 }
 

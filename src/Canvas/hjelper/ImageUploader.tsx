@@ -17,7 +17,6 @@ const ImageUploader: React.FC = () => {
       setError("Unsupported file format. Please upload PNG, JPG, or GIF.");
       return;
     }
-
     const reader = new FileReader();
     reader.onload = (e) => {
       const img = new Image();

@@ -3,6 +3,7 @@ import { IAppSettings } from "../../Redux/AppSettingsSlice";
 import { IImage, imageSlice } from "../../Redux/ImageSlice";
 
 import { RefObject } from "react";
+import { Canvas } from "fabric";
 
 const initialize = (
   canvasRef: RefObject<HTMLCanvasElement>,
@@ -22,7 +23,10 @@ const initialize = (
 
     const ctx = canvas.getContext("2d");
     const img = new Image();
-
+    const initCanvas = new Canvas(canvas, {
+      height: 100,
+    });
+    initCanvas.renderAll();
     img.src = imageUrl || ""; // Ensures imageUrl is not undefined
     img.onload = () => {
       // Resize the canvas to fit the image
