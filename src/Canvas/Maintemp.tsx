@@ -44,7 +44,7 @@ function Maintemp() {
     if (canvas && ctx) {
       if (history.length % 2 == 0) {
         ctx.fillStyle = "red";
-      }else{
+      } else {
         ctx.fillStyle = "black";
       }
 

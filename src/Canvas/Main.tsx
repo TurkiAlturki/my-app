@@ -1,9 +1,10 @@
-import { GetReduxState, SetReduxState } from "../Redux/Store";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as fabric from "fabric";
-import { LuChevronLeftCircle, LuChevronRightCircle } from "react-icons/lu";
+import { GetReduxState, SetReduxState } from "../Redux/Store";
 import menuSaveAs from "./hjelper/menuSaveAs";
 import displayProperties from "./hjelper/displayProperties";
+
+import { LuChevronLeftCircle, LuChevronRightCircle } from "react-icons/lu";
 
 function Main() {
   const setReduxState = SetReduxState();
@@ -16,7 +17,6 @@ function Main() {
 
   const undoStack = useRef<string[]>([]);
   const redoStack = useRef<string[]>([]);
-
   const saveCanvasState = () => {
     if (fabricCanvasRef.current) {
       const canvasJson = JSON.stringify(fabricCanvasRef.current);
@@ -37,9 +37,21 @@ function Main() {
       if (imageUrl && fabricCanvasRef.current) {
         const loadImage = async () => {
           try {
-            const img = await fabric.Image.fromURL(imageUrl, {
+            // Fetch the image as a Blob
+            const response = await fetch(imageUrl, { mode: "cors" });
+            const blob = await response.blob();
+
+            // Read EXIF data from the Blob
+
+
+            // Create an Object URL from the Blob
+            const objectURL = URL.createObjectURL(blob);
+
+            const img = await fabric.Image.fromURL(objectURL, {
               crossOrigin: "anonymous",
             });
+            // Revoke the Object URL after the image is loaded
+            URL.revokeObjectURL(objectURL);
 
             // Get canvas dimensions
             const canvasWidth = fabricCanvasRef.current!.getWidth();
@@ -65,7 +77,10 @@ function Main() {
             // Save initial canvas state
             saveCanvasState();
           } catch (error) {
-            console.error("Error loading image:", error);
+            console.error(
+              "Error loading image or extracting EXIF data:",
+              error,
+            );
           }
         };
         loadImage();
@@ -129,7 +144,7 @@ function Main() {
 
   // Function to handle displaying canvas properties
   const handleDisplayProperties = () => {
-    displayProperties(canvasRef);
+    displayProperties(canvasRef, imageUrl as string);
   };
 
   if (imageUrl) {
@@ -168,8 +183,8 @@ function Main() {
             <i className="text-3xl">ℹ️</i>
             <p className="text-sm font-semibold">Properties</p>
           </button>
-          
         </div>
+  
       </div>
     );
   } else {
