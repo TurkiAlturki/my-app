@@ -1,9 +1,9 @@
 import { GetReduxState, SetReduxState } from "../Redux/Store";
 import { PointerEvent as ReactPointerEvent, useEffect, useRef } from "react";
-import initialize from "./hjelper/initialize";
+
 import { LuChevronLeftCircle, LuChevronRightCircle } from "react-icons/lu";
-import { imageSlice } from "../Redux/ImageSlice";
 import { handleMoving } from "./hjelper/handleMoving";
+import initialize from "./hjelper/initialize";
 function Main() {
   const setReduxState = SetReduxState();
   const uperMenu = GetReduxState((state) => state.AppSettingsSlice.uperMenu);
