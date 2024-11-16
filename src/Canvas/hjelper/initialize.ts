@@ -1,13 +1,14 @@
+import * as fabric from "fabric";
+import { GetReduxState, SetReduxState } from "../../Redux/Store";
+import { RefObject } from "react";
+import { IImage, imageSlice } from "../../Redux/ImageSlice";
 import { ThunkDispatch, UnknownAction, Dispatch } from "@reduxjs/toolkit";
 import { IAppSettings } from "../../Redux/AppSettingsSlice";
-import { IImage, imageSlice } from "../../Redux/ImageSlice";
-
-import { RefObject } from "react";
-import { Canvas } from "fabric";
-
 const initialize = (
   canvasRef: RefObject<HTMLCanvasElement>,
-  imageUrl: string | null,
+  refContainer: RefObject<HTMLDivElement>,
+  fabricCanvasRef: any,
+  imageUrl: RequestInfo | URL | null,
   setReduxState: ThunkDispatch<
     { AppSettingsSlice: IAppSettings; ImageSlice: IImage },
     undefined,
@@ -15,27 +16,102 @@ const initialize = (
   > &
     Dispatch<UnknownAction>,
 ) => {
-  if (canvasRef.current) {
-    const canvas = canvasRef.current;
-    setReduxState(
-      imageSlice.setImageWidth(canvas.getBoundingClientRect().width),
+  if (canvasRef.current && refContainer.current) {
+    const container = refContainer.current.getBoundingClientRect();
+    canvasRef.current.width = container.width;
+    canvasRef.current.height = container.height;
+
+    if (fabricCanvasRef.current) {
+      fabricCanvasRef.current.dispose();
+      fabricCanvasRef.current = null; // Clear the reference
+    }
+
+    
+    fabricCanvasRef.current = new fabric.Canvas(canvasRef.current);
+
+    if (imageUrl && fabricCanvasRef.current) {
+      const loadImage = async () => {
+        try {
+          // Fetch the image as a Blob
+          const response = await fetch(imageUrl, { mode: "cors" });
+          const blob = await response.blob();
+
+          // Read EXIF data from the Blob
+
+          // Create an Object URL from the Blob
+          const objectURL = URL.createObjectURL(blob);
+
+          const img = await fabric.Image.fromURL(objectURL, {
+            crossOrigin: "anonymous",
+          });
+          // Revoke the Object URL after the image is loaded
+          URL.revokeObjectURL(objectURL);
+
+          // Get canvas dimensions
+          const canvasWidth = fabricCanvasRef.current!.getWidth();
+          const canvasHeight = fabricCanvasRef.current!.getHeight();
+
+          // Calculate scaling factor to fit image within canvas
+          const scaleX = canvasWidth / img.width!;
+          const scaleY = canvasHeight / img.height!;
+          const scale = Math.min(scaleX, scaleY);
+
+          // Scale and center the image
+          img.scale(scale);
+          img.set({
+            left: (canvasWidth - img.getScaledWidth()) / 2,
+            top: (canvasHeight - img.getScaledHeight()) / 2,
+            selectable: false,
+            evented: false,
+          });
+
+          fabricCanvasRef.current!.add(img);
+          fabricCanvasRef.current!.renderAll();
+          // Save initial state
+          saveCanvasState(fabricCanvasRef, setReduxState);
+        } catch (error) {
+          console.error("Error loading image:", error);
+        }
+      };
+
+      loadImage();
+    }
+
+    // Add listeners
+    fabricCanvasRef.current.on("object:added", () =>
+      saveCanvasState(fabricCanvasRef, setReduxState),
     );
+    fabricCanvasRef.current.on("object:modified", () =>
+      saveCanvasState(fabricCanvasRef, setReduxState),
+    );
+    fabricCanvasRef.current.on("object:removed", () =>
+      saveCanvasState(fabricCanvasRef, setReduxState),
+    );
+  }
 
-    const ctx = canvas.getContext("2d");
-    const img = new Image();
-    const initCanvas = new Canvas(canvas, {
-      height: 100,
-    });
-    initCanvas.renderAll();
-    img.src = imageUrl || ""; // Ensures imageUrl is not undefined
-    img.onload = () => {
-      // Resize the canvas to fit the image
-      canvas.width = img.width;
-      canvas.height = img.height;
+  // Cleanup
+  return () => {
+    if (fabricCanvasRef.current) {
+      fabricCanvasRef.current.off("object:added");
+      fabricCanvasRef.current.off("object:modified");
+      fabricCanvasRef.current.off("object:removed");
+      fabricCanvasRef.current.dispose();
+    }
+  };
+};
 
-      // Draw the image on the canvas
-      ctx?.drawImage(img, 0, 0, img.width, img.height);
-    };
+const saveCanvasState = (
+  fabricCanvasRef: React.MutableRefObject<fabric.Canvas | null>,
+  setReduxState: ThunkDispatch<
+    { AppSettingsSlice: IAppSettings; ImageSlice: IImage },
+    undefined,
+    UnknownAction
+  > &
+    Dispatch<UnknownAction>,
+) => {
+  if (fabricCanvasRef.current) {
+    const canvasJson = fabricCanvasRef.current.toJSON();
+    setReduxState(imageSlice.saveState(canvasJson));
   }
 };
 
