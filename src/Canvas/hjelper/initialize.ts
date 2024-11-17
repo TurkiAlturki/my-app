@@ -1,5 +1,4 @@
 import * as fabric from "fabric";
-import { GetReduxState, SetReduxState } from "../../Redux/Store";
 import { RefObject } from "react";
 import { IImage, imageSlice } from "../../Redux/ImageSlice";
 import { ThunkDispatch, UnknownAction, Dispatch } from "@reduxjs/toolkit";
@@ -36,9 +35,7 @@ const initialize = (
           const response = await fetch(imageUrl, { mode: "cors" });
           const blob = await response.blob();
 
-          // Read EXIF data from the Blob
 
-          // Create an Object URL from the Blob
           const objectURL = URL.createObjectURL(blob);
 
           const img = await fabric.Image.fromURL(objectURL, {
@@ -67,8 +64,8 @@ const initialize = (
 
           fabricCanvasRef.current!.add(img);
           fabricCanvasRef.current!.renderAll();
-          // Save initial state
-          saveCanvasState(fabricCanvasRef, setReduxState);
+     
+    
         } catch (error) {
           console.error("Error loading image:", error);
         }

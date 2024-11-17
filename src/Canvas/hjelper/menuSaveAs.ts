@@ -3,7 +3,7 @@ import * as fabric from "fabric";
 
 const menuSaveAs = async (
   canvasRef: RefObject<HTMLCanvasElement>,
-  fabricCanvasRef: RefObject<fabric.Canvas | null>
+  fabricCanvasRef: RefObject<fabric.Canvas | null>,
 ) => {
   if (!canvasRef.current || !fabricCanvasRef.current) {
     alert("No canvas to save.");
@@ -11,6 +11,7 @@ const menuSaveAs = async (
   }
 
   try {
+    fabricCanvasRef.current.toDataURL();
     const options = {
       types: [
         {
@@ -36,7 +37,7 @@ const menuSaveAs = async (
 
     // Extract available formats from the options list for the prompt
     const availableFormats = Object.keys(options.types[0].accept).map(
-      (type) => type.split("/")[1]
+      (type) => type.split("/")[1],
     );
     let format: string | null = null;
 
@@ -44,7 +45,7 @@ const menuSaveAs = async (
     while (!format || !availableFormats.includes(format)) {
       format =
         prompt(
-          `Enter file format (${availableFormats.join(", ")}):`
+          `Enter file format (${availableFormats.join(", ")}):`,
         )?.toLowerCase() || null;
 
       if (format === null) {
@@ -56,8 +57,8 @@ const menuSaveAs = async (
       if (!availableFormats.includes(format)) {
         alert(
           `Invalid format. Please enter one of the following: ${availableFormats.join(
-            ", "
-          )}.`
+            ", ",
+          )}.`,
         );
       }
     }
@@ -88,11 +89,11 @@ const menuSaveAs = async (
 
     // Render the image onto the temporary canvas
     tempCtx.drawImage(
-      (imageObject.getElement() as HTMLImageElement),
+      imageObject.getElement() as HTMLImageElement,
       0,
       0,
       imgWidth,
-      imgHeight
+      imgHeight,
     );
 
     // Convert the temporary canvas to the chosen format
