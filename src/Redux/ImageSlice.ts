@@ -3,8 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface IImage {
   imageUrl: string | null;
   imageWidth: number | null;
-  undoStack: string[];
-  redoStack: string[];
+  undoStack: any[];
+  redoStack: any[];
 }
 
 const initialState: IImage = {
